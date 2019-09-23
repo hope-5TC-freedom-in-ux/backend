@@ -5,7 +5,7 @@ import os
 
 import toml
 
-from ressources import Score, User
+from ressources import Score, User, Gains
 from page import Page
 from conf.secrets import session_key
 
@@ -34,6 +34,7 @@ def game():
 
     game_name = game_list.pop(0)
     session['game_list'] = game_list
+    session['gains'].append({'name': game_name, 'privacy': 0, 'time': 0})
 
     total_game_list = {c['name']: Page(c) for c in config['games']}
     game = total_game_list[game_name]
@@ -46,15 +47,21 @@ def start():
     session['game_list'] = [c['name'] for c in config['games']]
     session['privacy'] = 0
     session['time'] = 0
+    session['gains'] = []
     page = Page(config['start'])
+
+    session['gains'].append({'name': 'start', 'privacy': 0, 'time': 0})
+
     return page.content
 
 
 @app.route('/end')
 def end():
     page = Page(config['end'])
+    session['gains'].append({'name': 'end', 'privacy': 0, 'time': 0})
     return page.content
 
 api_version = 'v0.1'
 api.add_resource(User, '/api/' + api_version + '/user')
 api.add_resource(Score, '/api/' + api_version + '/score')
+api.add_resource(Gains, '/api/' + api_version + '/gains')
