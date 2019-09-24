@@ -1,0 +1,23 @@
+[start]
+content= """
+You have to click "start"
+<form action="/">
+    <input type="submit" value="start" />
+</form>
+"""
+
+[end]
+content="""
+You have to click "end"
+<form action="/start">
+    <input type="submit" value="end" />
+</form>
+"""
+
+[[games]]
+name="demo"
+content="demo game 1"
+
+[[games]]
+name="demo2"
+content="demo game 2"
