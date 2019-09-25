@@ -1,17 +1,17 @@
 from flask import Flask, session, redirect
-from flask_restful import Api
+from flask_restplus import Api
 from random import choice
 import os
 
 import toml
 
-from ressources import Score, User, Gains
 from page import Page
 from conf.secrets import session_key
 
-app = Flask(__name__)
-api = Api(app)
+from api import blueprint
 
+app = Flask(__name__)
+app.register_blueprint(blueprint)
 app.secret_key = session_key
 
 with open('conf/config.toml') as f:
@@ -61,7 +61,3 @@ def end():
     session['gains'].append({'name': 'end', 'privacy': 0, 'time': 0})
     return page.content
 
-api_version = 'v0.1'
-api.add_resource(User, '/api/' + api_version + '/user')
-api.add_resource(Score, '/api/' + api_version + '/score')
-api.add_resource(Gains, '/api/' + api_version + '/gains')
