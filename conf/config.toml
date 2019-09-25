@@ -1,23 +1,35 @@
-[start]
+[[games]]
+name="start"
 content= """
-You have to click "start"
+<h1>You have to click "start"</h1>
 <form action="/">
     <input type="submit" value="start" />
 </form>
 """
 
-[end]
+[[games]]
+name="demo"
 content="""
-You have to click "end"
-<form action="/start">
-    <input type="submit" value="end" />
+<h1>demo game 1</h1>
+<form action="/">
+    <input type="submit" value="next" />
 </form>
 """
 
 [[games]]
-name="demo"
-content="demo game 1"
+name="demo2"
+content="""
+<h1>demo game 2</h1>
+<form action="/">
+    <input type="submit" value="next" />
+</form>
+"""
 
 [[games]]
-name="demo2"
-content="demo game 2"
+name="end"
+content="""
+<h1>You have to click "end"</h1>
+<form action="/">
+    <input type="submit" value="end" />
+</form>
+"""
