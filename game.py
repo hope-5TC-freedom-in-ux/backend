@@ -63,7 +63,7 @@ class PetiteBoiteNoire(OrderedDict):
 
         if not session or restart:
             n = len(games)
-
+            session['current'] = games[-1]
             game_dict = {g: Game(name=g,
                                  max_time=self.max_time/n,
                                  max_privacy=self.max_privacy/n)
