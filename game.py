@@ -6,6 +6,7 @@
 # - use Score objets for each score
 # - initialize all session variables as soon as possible to avoid
 #   those horrible session verification
+# - store config in object at init
 
 from collections import OrderedDict
 from flask import session, Blueprint, current_app
@@ -61,7 +62,7 @@ class PetiteBoiteNoire(OrderedDict):
                 and session['current'] == games[-1]):
             restart = True
 
-        if not session or restart:
+        if not session or restart or ('game_list' not in session):
             n = len(games)
             session['current'] = games[-1]
             game_dict = {g: Game(name=g,
