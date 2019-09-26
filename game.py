@@ -140,12 +140,7 @@ class Game():
         games = {c['name']: c for c in config['games']}
         game_config = games[self.name]
 
-        if 'content' in game_config:
-            page = game_config['content']
-        else:
-            page = redirect(game_config['url'])
-
-        self.page = page
+        self.page = page(game_config)
 
     def dict(self):
         return {'name': self.name,
