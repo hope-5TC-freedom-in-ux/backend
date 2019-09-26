@@ -4,28 +4,40 @@
 # - refactoring : separate config from init
 # - ¿ refactoring : merge some objects with api ?
 # - use Score objets for each score
+# - initialize all session variables as soon as possible to avoid
+#   those horrible session verification
 
 from collections import OrderedDict
-from flask import session, redirect, Blueprint, current_app
+from flask import session, Blueprint, current_app
 import toml
 
+from page import page
+
 game = Blueprint('game', __name__)
+
+with open('conf/config.toml') as f:
+    config = toml.load(f)
 
 
 @game.route('/')
 def main():
-    pbn = PetiteBoiteNoire()
-    return pbn.next()
+    if not session:
+        session['game_state'] = 'game'
+    elif 'game_state' in session and session['game_state'] == 'game':
+        session['game_state'] = 'leaderboard'
+        pbn = PetiteBoiteNoire()
+        return pbn.next()
+
+    session['game_state'] = 'game'
+
+    return page(config['leaderboard'])
 
 
 @game.route('/restart')
 def start():
+    session['game_state'] == 'game'
     pbn = PetiteBoiteNoire(restart=True)
     return pbn.next()
-
-
-with open('conf/config.toml') as f:
-    config = toml.load(f)
 
 
 class PetiteBoiteNoire(OrderedDict):
@@ -45,8 +57,8 @@ class PetiteBoiteNoire(OrderedDict):
     def _games(self, restart=False):
         games = [c['name'] for c in config['games']]
         if (session
-            and 'current' in session
-            and session['current'] == games[-1]):
+                and 'current' in session
+                and session['current'] == games[-1]):
             restart = True
 
         if not session or restart:
