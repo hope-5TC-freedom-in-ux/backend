@@ -11,6 +11,7 @@ COPY ./server.py /app/server.py
 COPY ./api.py /app/api.py
 COPY ./page.py /app/page.py
 COPY ./conf /app/conf
+COPY ./game.py /app/game.py
 
 ENTRYPOINT ["sh"]
 CMD ["entrypoint.sh"]
