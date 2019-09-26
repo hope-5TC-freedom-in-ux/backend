@@ -91,6 +91,14 @@ class PetiteBoiteNoire(OrderedDict):
         return self[current]
 
     def add_gain(self, privacy, time):
+        """
+        Update gains. Values are relative
+
+        :param privacy: privacy to add in percent
+        :param time: time to add in percent
+        """
+        n = len(self)
+        privacy, time = privacy/n, time/n
         self.current().add_gain(privacy=privacy, time=time)
         # TODO: find a more elegant solution
         self._update_session()
