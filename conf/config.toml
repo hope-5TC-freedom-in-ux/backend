@@ -6,6 +6,30 @@ content = """
 </form>
 """
 
+[privacy]
+  [[privacy.intervals]]
+  lower = 0
+  upper = 42
+  message = """
+  privacy is between 0 and 42
+  """
+  [[privacy.intervals]]
+  lower = 42
+  upper = 100
+  message = """
+  privacy is between 42 and 100
+  """
+
+[time]
+  [[time.intervals]]
+  lower = 0
+  upper = 69
+  message = """
+  time is between 0 and 69
+  """
+
+
+
 [[games]]
 name="start"
 content= """
@@ -14,6 +38,9 @@ content= """
     <input type="submit" value="start" />
 </form>
 """
+congrat = 'this is a congrat'
+message = 'this is another message'
+fun_fact = 'this is a fun fact'
 
 [[games]]
 name="demo"

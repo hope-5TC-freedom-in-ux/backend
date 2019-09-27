@@ -7,6 +7,7 @@
 # - initialize all session variables as soon as possible to avoid
 #   those horrible session verification
 # - store config in object at init
+# - split file
 
 from collections import OrderedDict
 from flask import session, Blueprint, current_app
@@ -19,6 +20,12 @@ game = Blueprint('game', __name__)
 with open('conf/config.toml') as f:
     config = toml.load(f)
 
+def message(value, conf):
+    for interval in conf['intervals']:
+        if interval['lower'] <= value <= interval['upper']:
+            return interval['message']
+    return None
+
 
 @game.route('/')
 def main():
@@ -30,7 +37,6 @@ def main():
         return pbn.next()
 
     session['game_state'] = 'game'
-
     return page(config['leaderboard'])
 
 
@@ -134,9 +140,23 @@ class PetiteBoiteNoire(OrderedDict):
     def _update_session(self):
         session['game_list'] = [game.dict() for game in self.values()]
 
+    def game_message(self):
+        return self.current().message()
+
+    def final_message(self):
+        privacy, time = zip(*[(v['privacy'], v['time'])
+                              for v in self.scores()])
+        privacy, time = sum(privacy), sum(time)
+
+        privacy_msg = message(privacy, config['privacy'])
+        time_msg = message(time, config['time'])
+
+        return {'privacy': privacy_msg, 'time': time_msg}
+
 
 class Game():
     name = None
+    config = None
     privacy = None
     time = None
     page = None
@@ -147,7 +167,10 @@ class Game():
                  max_time=None,
                  privacy=None,
                  time=None):
+
         self.name = name
+        configs = {c['name']: c for c in config['games']}
+        self.config = configs[name]
 
         self.max_privacy = max_privacy
         self.privacy = privacy if privacy is not None else max_privacy
@@ -155,13 +178,7 @@ class Game():
         self.max_time = max_time
         self.time = time if time is not None else max_time
 
-        self._get_config()
-
-    def _get_config(self):
-        games = {c['name']: c for c in config['games']}
-        game_config = games[self.name]
-
-        self.page = page(game_config)
+        self.page = page(self.config)
 
     def dict(self):
         return {'name': self.name,
@@ -201,3 +218,10 @@ class Game():
 
     def score(self):
         return {'time': self.time, 'privacy': self.privacy}
+
+    def message(self):
+        return {'congrat': self.config['congrat'] if 'congrat' in self.config else None,
+                'message': self.config['message'] if 'message' in self.config else None,
+                'fun_fact': self.config['fun_fact'] if 'fun_fact' in self.config else None}
+
+

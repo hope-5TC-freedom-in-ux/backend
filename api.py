@@ -81,3 +81,15 @@ class Name(Resource):
     def get(self):
         pbn = PetiteBoiteNoire()
         return pbn.name()
+
+@api.route('/messages/game')
+class GameMessage(Resource):
+    def get(self):
+        pbn = PetiteBoiteNoire()
+        return pbn.game_message()
+
+@api.route('/messages/final')
+class FinalMessage(Resource):
+    def get(self):
+        pbn = PetiteBoiteNoire()
+        return pbn.final_message()
