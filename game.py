@@ -44,7 +44,7 @@ def main():
 
 @game.route('/restart')
 def start():
-    session['game_state'] == 'game'
+    session['game_state'] == 'leaderboard'
     pbn = PetiteBoiteNoire(restart=True)
     return pbn.next()
 
