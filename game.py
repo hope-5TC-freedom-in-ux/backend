@@ -29,9 +29,10 @@ def message(value, conf):
 
 @game.route('/')
 def main():
-    if not session:
+    if not session or 'game_state' not in session:
         session['game_state'] = 'game'
-    elif 'game_state' in session and session['game_state'] == 'game':
+
+    if session['game_state'] == 'game':
         session['game_state'] = 'leaderboard'
         pbn = PetiteBoiteNoire()
         return pbn.next()
