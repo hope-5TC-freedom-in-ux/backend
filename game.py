@@ -20,6 +20,7 @@ game = Blueprint('game', __name__)
 with open('conf/config.toml') as f:
     config = toml.load(f)
 
+
 def message(value, conf):
     for interval in conf['intervals']:
         if interval['lower'] <= value <= interval['upper']:
@@ -123,15 +124,20 @@ class PetiteBoiteNoire(OrderedDict):
                 for name, game in self.items()
                 if name not in future_games]
 
-    def score(self):
-        return self.current().score()
+    def score(self, game=None):
+        if not game:
+            game = self.current()
+        score = game.score()
+        score['privacy'] *= len(self)
+        score['time'] *= len(self)
+        return score
 
     def scores(self):
         game_list = list(self.keys())
         current_name = self.current().name
         future_games = game_list[game_list.index(current_name) + 1:]
 
-        return [{'name': name, **game.score()}
+        return [{'name': name, **self.score(game)}
                 for name, game in self.items()
                 if name not in future_games]
 
