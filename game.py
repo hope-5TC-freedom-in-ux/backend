@@ -152,7 +152,10 @@ class PetiteBoiteNoire(OrderedDict):
         privacy_msg = message(privacy, config['privacy'])
         time_msg = message(time, config['time'])
 
-        return {'privacy': privacy_msg, 'time': time_msg}
+        return {'privacy_msg': privacy_msg,
+                'time_msg': time_msg,
+                'time': time,
+                'privacy': privacy}
 
 
 class Game():
