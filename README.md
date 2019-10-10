@@ -1,9 +1,6 @@
 This repository contains the backend for « La Petite Boite Noire »
 
-# La Petite Boite Noire
-
-« La Petite Boite Noire » is an immersive experiment into the dark face of websites.
-The aim is to sensitize you to the questionable ethic of web giants.
+You might mant to look at [the repository containing « La Petite Boite Noire » games](https://github.com/hope-5TC-freedom-in-ux/docker)
 
 # Usage
 
