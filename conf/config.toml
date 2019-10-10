@@ -6,6 +6,14 @@ content = """
 </form>
 """
 
+[end]
+content = """
+<h1>This is the end<h1>
+<form action="/">
+    <input type="submit" value="restart" />
+</form>
+"""
+
 [privacy]
   [[privacy.intervals]]
   lower = 0

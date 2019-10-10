@@ -8,6 +8,7 @@
 #   those horrible session verification
 # - store config in object at init
 # - split file
+# - use a state machine
 
 from collections import OrderedDict
 from flask import session, Blueprint, current_app
@@ -37,6 +38,9 @@ def main():
         session['game_state'] = 'leaderboard'
         pbn = PetiteBoiteNoire()
         return pbn.next()
+    elif session['game_state'] == 'end':
+        session['game_state'] = 'game'
+        return page(config['end'])
 
     session['game_state'] = 'game'
     return page(config['leaderboard'])
@@ -93,6 +97,9 @@ class PetiteBoiteNoire(OrderedDict):
         else:
             current = session['current']
             session['current'] = games[games.index(current) + 1]
+
+        if session['current'] == games[-2]:
+            session['game_state'] = 'end'
         return self.current().page
 
     def current(self):
